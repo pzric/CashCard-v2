@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: CashCard
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:authz.pub
+  logging:
+    level:
+      org.springframework.security: TRACE
