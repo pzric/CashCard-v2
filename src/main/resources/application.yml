@@ -6,6 +6,7 @@ spring:
       resourceserver:
         jwt:
           public-key-location: classpath:authz.pub
+          audiences: cashcard-client
   logging:
     level:
       org.springframework.security: TRACE

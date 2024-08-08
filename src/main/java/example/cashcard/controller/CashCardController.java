@@ -24,6 +24,11 @@ public class CashCardController {
         this.cashCards = cashCards;
     }
 
+    @GetMapping
+    public ResponseEntity<Iterable<CashCard>> findAll(){
+        return ResponseEntity.ok(cashCards.findAll());
+    }
+
     @GetMapping("/{requestedId}")
     public ResponseEntity<CashCard> findById(@PathVariable Long requestedId) {
         return this.cashCards.findById(requestedId)
@@ -40,11 +45,5 @@ public class CashCardController {
                 .buildAndExpand(savedCashCard.id())
                 .toUri();
         return ResponseEntity.created(locationOfNewCashCard).body(savedCashCard);
-    }
-
-    @GetMapping
-    public ResponseEntity<Iterable<CashCard>> findAll(@CurrentOwner String owner){
-        var result = this.cashCards.findByOwner(owner);
-        return ResponseEntity.ok(result);
     }
 }
