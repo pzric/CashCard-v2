@@ -17,13 +17,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username = "sarah1")
+@WithMockUser(username = "sarah1", authorities = {"SCOPE_cashcard:read", "SCOPE_cashcard:write"})
 class CashCardApplicationTests {
 
     @Autowired
     private MockMvc mvc;
+
+    @WithMockUser(username = "esuez5", authorities = {"SCOPE_cashcard:read"})
+    @Test
+    void shouldReturnForbiddenWhenCardBelongsToSomeoneElse() throws Exception {
+        this.mvc.perform(get("/cashcards/99"))
+                .andExpect(status().isForbidden());
+    }
 
     @Test
     void shouldReturnACashCardWhenDataIsSaved() throws Exception {
@@ -33,6 +41,7 @@ class CashCardApplicationTests {
                 .andExpect(jsonPath("$.owner").value("sarah1"));
     }
 
+    @WithMockUser(username="esuez5", authorities = {"SCOPE_cashcard:read", "SCOPE_cashcard:write"})
     @Test
     @DirtiesContext
     void shouldCreateANewCashCard() throws Exception {
@@ -51,7 +60,7 @@ class CashCardApplicationTests {
         this.mvc.perform(get(location))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(250.00))
-                .andExpect(jsonPath("$.owner").value("sarah1"));
+                .andExpect(jsonPath("$.owner").value("esuez5"));
     }
 
     @Test
