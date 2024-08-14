@@ -49,7 +49,7 @@ El proyecto incluye una suite de pruebas automatizadas utilizando Spring Test pa
    ```bash
    ./gradlew build
 
-4. **Construir el proyecto usando Gradle**:
+4. **Ejecutar la aplicación**:
    ```bash
    ./gradlew bootRun
    
